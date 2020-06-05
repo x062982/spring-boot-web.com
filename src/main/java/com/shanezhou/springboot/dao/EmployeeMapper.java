@@ -5,7 +5,6 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -14,7 +13,7 @@ import java.util.List;
  * @Author shaneZhou
  * @Time 2020/05/30 18:23 下午
  */
-@Component
+//@Component
 public interface EmployeeMapper {
 
     /**
@@ -24,7 +23,7 @@ public interface EmployeeMapper {
      */
     @Insert("insert into employee(id, userName, password, email, age, gender, birthday, dept_id) values " +
             "(seq_emp_id.nextval, #{userName}, #{password}, #{email}, #{age}, #{gender}, #{birthday}, #{deptId})")
-    boolean save(Employee employee);
+    int save(Employee employee);
 
     /**
      * 更新用户
@@ -33,7 +32,7 @@ public interface EmployeeMapper {
      */
     @Update("update employee set userName = #{userName}, password = #{password}, email = #{email}," +
             " gender = #{gender}, age = #{age}, birthday = #{birthday}, dept_id = #{deptId} where id = #{id}")
-    boolean update(Employee employee);
+    int update(Employee employee);
 
     /**
      * 根据用户编号删除用户
@@ -41,7 +40,7 @@ public interface EmployeeMapper {
      * @return
      */
     @Delete("delete from employee where id = #{id}")
-    boolean delete(int id);
+    int delete(int id);
 
     /**
      * 查找所有对象

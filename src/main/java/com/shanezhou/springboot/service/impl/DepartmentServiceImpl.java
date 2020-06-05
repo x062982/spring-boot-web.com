@@ -5,6 +5,7 @@ import com.shanezhou.springboot.entity.Department;
 import com.shanezhou.springboot.service.IDepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ import java.util.List;
  * @Time 2020/06/01 16:52:08
  */
 @Service
+@EnableTransactionManagement
 public class DepartmentServiceImpl implements IDepartmentService {
 
     @Autowired

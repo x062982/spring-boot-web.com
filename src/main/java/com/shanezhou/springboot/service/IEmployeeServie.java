@@ -16,21 +16,21 @@ public interface IEmployeeServie {
      * @param employee  用户对象
      * @return
      */
-    boolean save(Employee employee);
+    int save(Employee employee);
 
     /**
      * 根据id查找用户进行更新
      * @param employee  用户对象
      * @return
      */
-    boolean updById(Employee employee);
+    int updById(Employee employee);
 
     /**
      * 根据id编号删除用户
      * @param id    用户编号
      * @return
      */
-    boolean delDyId(int id);
+    int delDyId(int id);
 
     /**
      * 查找所有用户

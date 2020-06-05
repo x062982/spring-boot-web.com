@@ -1,18 +1,22 @@
 package com.shanezhou.springboot.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.shanezhou.springboot.entity.Department;
 import com.shanezhou.springboot.entity.Employee;
 import com.shanezhou.springboot.service.IDepartmentService;
+import com.shanezhou.springboot.service.IEmployeeMPService;
 import com.shanezhou.springboot.service.IEmployeeServie;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -24,11 +28,12 @@ import java.util.Map;
 @Controller
 public class EmployeeController {
 
-    @Autowired
-    private IEmployeeServie employeeServie;
+    @Resource
+    private IEmployeeMPService employeeServie;
 
     @Autowired
     private IDepartmentService departmentService;
+
 
     /**
      * 用户登录
@@ -69,9 +74,12 @@ public class EmployeeController {
      * @param map
      * @return
      */
-    @GetMapping("/emps")
-    public String getEmpAll(Map<String, Object> map) {
-        List<Employee> employeeList = employeeServie.getAll();
+    @GetMapping("/emps/{page}/{pageSize}")
+    public String getEmpAll(Map<String, Object> map,
+                            @DefaultValue(value = "1") @PathVariable int page,
+                            @DefaultValue(value = "10") @PathVariable int pageSize) {
+        Page<Employee> pageData = employeeServie.getAll(page, pageSize);
+        List<Employee> employeeList = pageData.getRecords();
         for (Employee emp : employeeList) {
             int deptId = emp.getDeptId();
             if (deptId != 0) {
@@ -79,7 +87,9 @@ public class EmployeeController {
                 emp.setDepartment(dept);
             }
         }
+        map.put("count", pageData.getTotal() / pageSize + 1);
         map.put("emps", employeeList);
+        map.put("current", pageData.getCurrent());
         return "/list";
     }
 
@@ -138,7 +148,7 @@ public class EmployeeController {
     @PutMapping("/emp")
     public String updateEmp(Employee employee) {
         System.out.println(employee);
-        boolean upd = employeeServie.updById(employee);
+        int upd = employeeServie.updById(employee);
         return "redirect:/emps";
     }
 

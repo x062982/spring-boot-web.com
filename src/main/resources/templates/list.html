@@ -6,7 +6,7 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Jekyll v4.0.1">
-    <title>Dashboard Template · Bootstrap</title>
+    <title>SpringBootWeb</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/dashboard/">
 
@@ -77,6 +77,23 @@
             </tr>
           </tbody>
         </table>
+        <nav aria-label="">
+          <ul class="pagination justify-content-center">
+            <li class="page-item">
+              <a class="page-link" href="#"
+                 th:href="@{/emps/} + (${current} == 1 ? 1 : ${current - 1}) + @{/10}">上页</a>
+            </li>
+            <li class="page-item" th:each="c : ${#numbers.sequence(1,count)}"
+                th:class="${current} == ${c} ? 'active page-item' : 'page-item'">
+              <a class="page-link" href="#"
+                 th:href="@{/emps/} + ${c} + @{/10}">[[${c}]]</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="#"
+                 th:href="@{/emps/} + (${current} == ${count} ? ${count} : ${current + 1}) + @{/10}">下页</a>
+            </li>
+          </ul>
+        </nav>
       </div>
     </main>
   </div>
