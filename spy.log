@@ -1,1 +1,0 @@
-1591250218462|121|statement|connection 0|url jdbc:p6spy:oracle:thin:@localhost:1521:oracledb|SELECT  id,username,dept_id,password,email,age,gender,birthday  FROM employee     WHERE (username = ? AND age >= ?)|SELECT  id,username,dept_id,password,email,age,gender,birthday  FROM employee     WHERE (username = 'shane' AND age >= 0)
