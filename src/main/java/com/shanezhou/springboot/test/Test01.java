@@ -1,5 +1,9 @@
 package com.shanezhou.springboot.test;
 
+
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -10,25 +14,32 @@ import java.util.regex.Pattern;
 public class Test01 {
 
     public static void main(String[] args) {
-        //                  0    5   10  13
-        hump2underLine("ad");
+
     }
 
-    public static String hump2underLine(String str) {
-        Pattern pattern = Pattern.compile("[A-Z]");
-        Matcher matcher = pattern.matcher(str);
-        StringBuilder s = new StringBuilder();
-        while (matcher.find()) {
-            int index = matcher.start();
-            if (index == 0) {
-                matcher.appendReplacement(s, matcher.group().toLowerCase());
-            } else {
-                matcher.appendReplacement(s, "_" + matcher.group().toLowerCase());
+}
+
+class TestEnums<T> {
+
+    public T getEnums(Class<T> clazz, int value) throws IllegalAccessException, InstantiationException {
+        try {
+            Field[] fields = clazz.getDeclaredFields();
+            for (int i = 0; i < fields.length; i++) {
+                System.out.println(fields[i]);
+
             }
-            matcher.appendTail(s);
-            System.out.println(s);
+            Method getValueMethod = clazz.getDeclaredMethod("getValue");
+            T[] enumArr = clazz.getEnumConstants();
+            for (int i = 0; i < enumArr.length; i++) {
+                if ((int)getValueMethod.invoke(enumArr[i]) == value) {
+                    return enumArr[i];
+                }
+            }
+        } catch (NoSuchMethodException | InvocationTargetException e) {
+            e.printStackTrace();
         }
-        System.out.println(str);
-        return s.toString();
+
+        return null;
     }
+
 }

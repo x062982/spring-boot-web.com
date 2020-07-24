@@ -9,6 +9,8 @@ import lombok.EqualsAndHashCode;
 </#if></#if>
 <#if cfg.seqName??>import com.baomidou.mybatisplus.annotation.KeySequence;
 </#if>
+<#if cfg.updateStrategy == "ignore">import org.apache.ibatis.type.JdbcType;
+</#if>
 
 /**
 * <p>
@@ -30,12 +32,15 @@ import lombok.EqualsAndHashCode;
 <#if swagger2>@ApiModel(value="${entity}对象", description="${table.comment!}")
 </#if><#if superEntityClass??>public class ${entity} extends ${superEntityClass}<#if activeRecord><${entity}></#if> {
 <#elseif activeRecord>public class ${entity} extends Model<${entity}> {
+
 <#else>public class ${entity} implements Serializable {
+
 </#if>
 <#if entitySerialVersionUID>    private static final long serialVersionUID = 1L;
 </#if><#-- ----------  BEGIN 字段循环遍历  ----------><#list table.fields as field><#if field.keyFlag><#assign keyPropertyName = "${field.propertyName}"></#if>
 <#if field.comment!?length gt 0><#if swagger2>    @ApiModelProperty(value = "${field.comment}")
-<#else>    /**
+<#else>
+    /**
     * ${field.comment}
     */
 </#if></#if><#if field.keyFlag><#-- 主键 --><#if field.keyIdentityFlag>    @TableId(value = "${field.annotationColumnName}", type = IdType.AUTO)
@@ -43,10 +48,13 @@ import lombok.EqualsAndHashCode;
 <#elseif field.convert>    @TableId("${field.annotationColumnName}")
 </#if><#-- 普通字段 --><#elseif field.fill??><#-- -----   存在字段填充设置   -----><#if field.convert>    @TableField(value = "${field.annotationColumnName}", fill = FieldFill.${field.fill})
 <#else>    @TableField(fill = FieldFill.${field.fill})
-</#if><#elseif field.convert>    @TableField("${field.annotationColumnName}")
+</#if><#elseif cfg.updateStrategy == "ignore"><#assign type = "${field.type}">
+    @TableField(value = "${field.annotationColumnName}", jdbcType = JdbcType.<#if type[0..2] == "NUM">DOUBLE<#elseif type[0..2] == "VAR">VARCHAR<#else>${type}</#if>)
+<#elseif field.convert>    @TableField("${field.annotationColumnName}")
 </#if><#-- 乐观锁注解 --><#if (versionFieldName!"") == field.name>    @Version
 </#if><#-- 逻辑删除注解 --><#if (logicDeleteFieldName!"") == field.name>    @TableLogic
 </#if>    private ${field.propertyType} ${field.propertyName};
+
 </#list><#------------  END 字段循环遍历  ---------->
 <#if !entityLombokModel><#list table.fields as field><#if field.propertyType == "boolean"><#assign getprefix = "is"><#else><#assign getprefix = "get"></#if>    public ${field.propertyType} ${getprefix}${field.capitalName}() {
     return ${field.propertyName};
