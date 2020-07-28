@@ -17,18 +17,27 @@ public class CommonUtils {
     public static String hump2underLine(String str) {
         Pattern pattern = Pattern.compile("[A-Z]");
         Matcher matcher = pattern.matcher(str);
+        boolean isMatch = matcher.find();
+        if (!isMatch) {
+            return str;
+        }
         StringBuilder s = new StringBuilder();
-        while (matcher.find()) {
+        while (isMatch) {
             int index = matcher.start();
-            if (index == 0) {
+            if (index == 0 || index == str.length()) {
                 matcher.appendReplacement(s, matcher.group().toLowerCase());
             } else {
                 matcher.appendReplacement(s, "_" + matcher.group().toLowerCase());
             }
-            matcher.appendTail(s);
-            System.out.println(s);
+            isMatch = matcher.find();
         }
-        System.out.println(str);
+        matcher.appendTail(s);
         return s.toString();
+
+    }
+
+    public static void main(String[] args) {
+        String s = hump2underLine("aadFwadsAwDd");
+        System.out.println(s);
     }
 }
