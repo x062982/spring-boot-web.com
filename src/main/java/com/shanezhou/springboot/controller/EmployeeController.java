@@ -50,23 +50,25 @@ public class EmployeeController {
                         @RequestParam("password") String password,
                         Map<String, Object> map, HttpSession session,
                         HttpServletRequest request, HttpServletResponse response) {
-        Employee employee = employeeServie.getByName(userName);
-        // 记住我
-        String remember = request.getParameter("remember");
-        if (employee == null) {
-            map.put("msg", "用户名【" + userName + "】不存在！");
-            return "index";
-        } else if (!employee.getPassword().equals(password)){
-            map.put("msg", "密码错误！");
-            return "index";
-        } else {
-            if ("1".equals(remember)) {
-                response.addCookie(new Cookie(userName,  password));
-                response.addCookie(new Cookie("remember",  remember));
-            }
-            session.setAttribute("username", userName);
-            return "redirect:/main.html";
-        }
+        session.setAttribute("username", userName);
+        return "testpoi";
+        //Employee employee = employeeServie.getByName(userName);
+        //// 记住我
+        //String remember = request.getParameter("remember");
+        //if (employee == null) {
+        //    map.put("msg", "用户名【" + userName + "】不存在！");
+        //    return "index";
+        //} else if (!employee.getPassword().equals(password)){
+        //    map.put("msg", "密码错误！");
+        //    return "index";
+        //} else {
+        //    if ("1".equals(remember)) {
+        //        response.addCookie(new Cookie(userName,  password));
+        //        response.addCookie(new Cookie("remember",  remember));
+        //    }
+        //    session.setAttribute("username", userName);
+        //    return "redirect:/main.html";
+        //}
     }
 
     /**

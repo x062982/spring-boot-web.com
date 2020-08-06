@@ -56,4 +56,20 @@ public class StringTools {
                 LocalDate.parse(str, YYYY_MM_DD);
     }
 
+    public static Object stringToType(Class clazz, String value) {
+        String typeName = clazz.getTypeName();
+        String type = typeName.substring(typeName.lastIndexOf(".") + 1).toLowerCase();
+        switch (type) {
+            case "string":
+                return value;
+            case "long":
+                return Long.valueOf(value);
+            case "int":
+                return Integer.valueOf(value);
+            case "localdatetime":
+                return LocalDateTime.parse(value, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            default:
+                return value;
+        }
+    }
 }

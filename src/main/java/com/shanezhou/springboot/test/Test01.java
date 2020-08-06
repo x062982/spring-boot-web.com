@@ -1,9 +1,13 @@
 package com.shanezhou.springboot.test;
 
 
+import com.shanezhou.springboot.entity.Student;
+import com.shanezhou.springboot.util.StringTools;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.time.LocalDateTime;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -13,8 +17,11 @@ import java.util.regex.Pattern;
  */
 public class Test01 {
 
-    public static void main(String[] args) {
-
+    public static void main(String[] args) throws NoSuchFieldException {
+        Student student = new Student();
+        Field field = student.getClass().getDeclaredField("birthday");
+        Object o = StringTools.stringToType(field.getType(), "2020-12-03 00:00:00");
+        student.setBirthday((LocalDateTime)o);
     }
 
 }
