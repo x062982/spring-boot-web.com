@@ -32,7 +32,7 @@ public class HelloController {
     @GetMapping("/qrCode")
     public void getQRCode(HttpServletResponse response) {
         File file = new File("E:\\MyProjects\\SpringBootWeb\\src\\main\\resources\\pic");
-        
+
         String url = "https://www.baidu.com/";
         String content = "访问百度！";
         BufferedImage image = QRCodeGenerator.drawQRCode(null, url, content);

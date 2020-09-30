@@ -15,8 +15,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * @Author ShaneZhou
  * @Time 2020/06/04 10:43:44
  */
-@Configuration
 @EnableTransactionManagement
+@Configuration
 public class MyBatisPlusConfiguration {
 
     /**

@@ -110,7 +110,7 @@ public class OracleGenerator {
                     map.put("tableLevel2", finalTableLevel);
                     map.put("isExtend", false);
                     map.put("project", project);
-                    //map.put("updateStrategy", "ignore");
+                    map.put("updateStrategy", "ignore");
                 }
                 this.setMap(map);
             }

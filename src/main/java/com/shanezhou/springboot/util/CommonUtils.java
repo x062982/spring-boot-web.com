@@ -37,20 +37,44 @@ public class CommonUtils {
         return s.toString();
     }
 
-
-    public static void findDiffWithTwoArr(int[] oldStrArr, int[] strArr) {
-        int[] tempArr = new int[oldStrArr.length + strArr.length];
-
-        List diffList = new ArrayList();
-        for (int i = 0; i < oldStrArr.length; i++) {
-            tempArr[oldStrArr[i]]++;
-        }
+    public static Integer[] findDiff(int[] strArr, int[] existArr) {
+        quickSort(strArr, 0, strArr.length - 1);
+        quickSort(existArr, 0, existArr.length - 1);
+        int max = Math.max(strArr[strArr.length - 1], existArr[existArr.length - 1]);
+        int[] tempArr = new int[++max];
+        List<Integer> list = new ArrayList<>();
         for (int i = 0; i < strArr.length; i++) {
-            if (tempArr[strArr[i]] == 0) {
-                diffList.add(strArr[i]);
+            tempArr[strArr[i]]++;
+        }
+        for (int i = 0; i < existArr.length; i++) {
+            if (tempArr[existArr[i]] == 0) {
+                list.add(existArr[i]);
             }
         }
-        System.out.println(Arrays.toString(diffList.toArray()));
+        return list.toArray(Integer[] :: new);
+    }
+
+    public static void findDiffWithTwoArr(int[] oldStrArr, int[] strArr) {
+        Map<Integer, Integer> map = new HashMap<>();
+        List diffList = new ArrayList();
+        for (int i = 0; i < oldStrArr.length; i++) {
+            map.put(oldStrArr[i], 1);
+        }
+        for (int i = 0; i < strArr.length; i++) {
+            if (map.containsKey(strArr[i])) {
+                map.put(strArr[i], 2);
+            } else {
+                map.put(strArr[i], 3);
+            }
+        }
+        map.forEach((k, v) -> {
+            if (v == 1) {
+                diffList.add(k);
+            }
+        });
+        diffList.forEach(k -> {
+            System.out.println(k);
+        });
     }
 
     public static void quickSort(int[] arr, int start, int end) {
@@ -75,20 +99,21 @@ public class CommonUtils {
     }
 
     public static void main(String[] args) {
-        //int[] arr = new int[]{12, 23, 21, 3, 4, 42};
-        int[] arr = new int[100000];
-        for (int i = 0; i < arr.length; i++) {
-            arr[i] = new Random().nextInt(20);
-        }
-        System.out.println(Arrays.toString(arr));
-        long startTime = LocalTime.now().getNano();
-        //findDiffWithTwoArr(arr, new int[]{2, 1});
-        quickSort(arr, 0, arr.length - 1);
-        long endTime = LocalTime.now().getNano();
-        long diff = endTime - startTime;
-        LocalTime localTime = LocalTime.ofNanoOfDay(diff);
-        System.out.println(localTime);
-        System.out.println(Arrays.toString(arr));
+        ////int[] arr = new int[]{12, 23, 21, 3, 4, 42};
+        //int[] arr = new int[100000];
+        //for (int i = 0; i < arr.length; i++) {
+        //    arr[i] = new Random().nextInt(20);
+        //}
+        //System.out.println(Arrays.toString(arr));
+        //long startTime = LocalTime.now().getNano();
+        ////findDiffWithTwoArr(arr, new int[]{2, 1});
+        //quickSort(arr, 0, arr.length - 1);
+        //long endTime = LocalTime.now().getNano();
+        //long diff = endTime - startTime;
+        //LocalTime localTime = LocalTime.ofNanoOfDay(diff);
+        //System.out.println(localTime);
+        //System.out.println(Arrays.toString(arr));
+
     }
 
 }
